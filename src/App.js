@@ -10,18 +10,21 @@ import { RootErrorBoundary } from "./RootErrorBoundary.js";
 
 import { LoginPage } from "./LoginPage.js";
 import { TestFormPage } from "./TestFormPage.js";
+import { TestDialogBoxPage } from "./TestDialogBoxPage.js";
 
 // Map loaded lib here ...
-// const uuidv4 = window.uuidv4;
-// const moment = window.moment;
+const uuidv4 = window.uuidv4;
+const moment = window.moment;
 
 // Layout
 export async function layoutLoader() {
     console.log("Layout or base loader start ...");
     // await tBox.sleep();
     console.log("Layout loader end ...");
+
     return {
-        date: new Date().toISOString(),
+        date: moment().format("YYYY-MM-DD HH:mm:ss"),
+        uuid: uuidv4(),
     };
 };
 
@@ -36,17 +39,16 @@ export function Layout() {
             <div className="container-fluid">
                 <reactRouter.Outlet />
             </div>
-
         </>
     );
 };
 
-
 // App
-export default function App() {
-
+export default function App({debugMode = true}) {
+    const componentName = "App";
+    if (debugMode) console.log(`${componentName} component start ...`);
+    
     const [mode, setMode] = react.useState("load");
-
     const [localData, setLocalData] = react.useState({});
     const [config, setConfig] = react.useState({});
     const [gsl, setGSL] = react.useState({});
@@ -54,34 +56,38 @@ export default function App() {
     // const [redraw, setRedraw] = react.useState(0);
 
     // function
-    function updateApplicationLanguage(lang) {
-        console.log("Update application language");
+    async function updateApplicationLanguage(lang) {
+        if (debugMode) console.log("Update application language");
         let data = localData;
-        setLocalData({...localData, applicationLanguage: lang});
+        setLocalData({ ...data, applicationLanguage: lang });
+        tBox.updateAppLocalData("applicationLanguage", lang);
 
-       return;
+        let obj3 = await tBox.loadConfiguration4Label(lang);
+        setGSL(obj3);
+        console.log("String label", obj3, gsl);
+        return;
     };
-    
+
 
     react.useEffect(() => {
-        console.log("Effect on app ... ", mode, new Date());
+        if (debugMode) console.log("Run on effect", mode);
 
         setTimeout(async () => {
 
             let obj1 = tBox.getAppLocalData();
             setLocalData({ ...obj1 });
-            console.log("Local data", obj1, localData);
+            if (debugMode) console.log("Local data", obj1, localData);
 
             let obj2 = await tBox.loadConfiguration4Parameter();
             setConfig(obj2);
-            console.log("Configuration", obj2, config);
+            if (debugMode) console.log("Configuration", obj2, config);
 
             let obj3 = await tBox.loadConfiguration4Label(obj1.applicationLanguage);
             setGSL(obj3);
-            console.log("String label", obj3, gsl);
+            if (debugMode) console.log("String label", obj3, gsl);
 
             setMode("list");
-            console.log("Mode", mode);
+            if (debugMode) console.log("Mode", mode);
         }, 1000 * 1);
 
     }, []);
@@ -117,6 +123,10 @@ let router = reactRouter.createHashRouter([
             {
                 path: "testForm",
                 Component: TestFormPage,
+            },
+            {
+                path: "testDialogBox",
+                Component: TestDialogBoxPage,
             },
         ],
     },

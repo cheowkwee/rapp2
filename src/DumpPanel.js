@@ -9,9 +9,10 @@ import { globalContext } from "./globalContext.js";
 // const uuidv4 = window.uuidv4;
 // const moment = window.moment;
 
-export function DumpPanel({ dataList }) {
-    console.log("Dump panel component start ...", dataList);
-
+export function DumpPanel({ dataList = [], debugMode = false }) {
+    const componentName = "DumpPanel";
+    if (debugMode) console.log(`${componentName} component start ...`, dataList);
+    if (!debugMode) return null;
   
     let s = "";
     for (let item of dataList)
@@ -24,7 +25,6 @@ export function DumpPanel({ dataList }) {
             <pre className="p-3 border bg-light rounded">
                 {s}
             </pre>
-
         </>
     );
 }

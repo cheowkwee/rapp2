@@ -22,8 +22,9 @@ export async function homeLoader() {
     };
 }
 
-export function Home() {
-    console.log("Home component start ...");
+export function Home({ debugMode = false }) {
+    const componentName = "Home";
+    if (debugMode) console.log(`${componentName} component start ...`);
 
     let data = reactRouter.useLoaderData();
     const { config, localData, gsl } = react.useContext(globalContext);

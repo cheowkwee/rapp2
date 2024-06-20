@@ -1,11 +1,11 @@
-const debugMode = true;
+
+let debugMode = true;
 
 const key4AppLocalData = "UnityTestVersion1";
 const url4DefaultParameter = "./conf/default.conf";
 const url4AppParameter = "./conf/app.conf"
 
 const url4DefaultLabel = "./conf/label.conf"
-
 
 export function sleep(n = 500) {
     console.log(`Sleep for ${n}`);
@@ -114,6 +114,18 @@ export function getAppLocalData() {
     return obj;
 };
 
+export function updateAppLocalData(fieldName, value) {
+    if (fieldName == undefined) return;
+    let key = key4AppLocalData;
+    let obj = getLocalData(key);
+
+    // update with new value
+    obj[fieldName] = value;
+
+    putLocalData(key, obj);   
+    return obj;
+};
+
 export function getStringLabel(gsl, name) {
     let obj1 = gsl['main'];
     let obj2 = gsl[name];
@@ -132,7 +144,6 @@ export function camel2String(s) {
 export function snake2Camel(s) {
     return s.replace(/[^a-zA-Z0-9]+(.)/g, (m, c) => c.toUpperCase());
 }
-
 
 export function getClass4IsInvalid(valid, dirty = false, required = false) {
     console.log("Class for is invalid", valid, dirty, required);

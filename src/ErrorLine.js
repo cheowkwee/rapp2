@@ -10,9 +10,9 @@ import { globalContext } from "./globalContext.js";
 // const uuidv4 = window.uuidv4;
 // const moment = window.moment;
 
-export function ErrorLine({ message }) {
-    console.log("Error line component start ...", message);
-
+export function ErrorLine({ message, debugMode = false}) {
+    const componentName = "ErrorLine";
+    if (debugMode) console.log(`${componentName} component start ...`, message);
 
     return (
         <>

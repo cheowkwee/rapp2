@@ -6,41 +6,38 @@ import { globalContext } from "./globalContext.js";
 
 import { ErrorLine } from "./ErrorLine.js";
 import { DumpPanel } from "./DumpPanel.js";
+import { InfoDialogBox } from "./InfoDialogBox.js";
 
 
 // Map loaded lib here ...
 // const uuidv4 = window.uuidv4;
 // const moment = window.moment;
 
-export function TestFormPage() {
-    console.log("Test form page component start ...");
+export function TestFormPage({ debugMode = false }) {
+    const componentName = "TestFormPage";
+    if (debugMode) console.log(`${componentName} component start ...`);
 
     // let data = reactRouter.useLoaderData();
-    const componentName = "TestFormPage";
     const { config, localData, gsl, updateApplicationLanguage } = react.useContext(globalContext);
 
     let sl = tBox.getStringLabel(gsl, componentName);
 
     const [showPassword, setShowPassword] = react.useState(false);
     const [record, setRecord] = react.useState({});
-    const formElement = react.useRef();
+    const ref4Form = react.useRef();
 
     const [fieldState, setFieldState] = react.useState({});
     const [formState, setFormState] = react.useState({ dirty: false, valid: false });
     const navigate = reactRouter.useNavigate();
 
     react.useEffect(() => {
-        let obj = tBox.buildFormFieldState(formElement.current);
+        let obj = tBox.buildFormFieldState(ref4Form.current);
         setFieldState(obj);
     }, []);
 
-    // function need to move to lib ...
-
- 
-
     // event handling function here ...
     function toggle4Language(e) {
-        console.log("Toggle for Language ", e);
+        if (debugMode) console.log("Toggle for Language ", e);
 
         let lang = localData.applicationLanguage;
         if (lang == "English") lang = "Chinese";
@@ -53,27 +50,27 @@ export function TestFormPage() {
     };
 
     function click4Back(e) {
-        console.log("Click for back ", e);
+        if (debugMode) console.log("Click for back ", e);
         navigate(-1);
         return;
     };
 
     function click4SignIn(e) {
-        console.log("Click for sign in ", e);
+        if (debugMode) console.log("Click for sign in ", e);
         return;
     };
 
     function toggle4ShowPassword(e) {
-        console.log("Toggle for show password ", e);
+        if (debugMode) console.log("Toggle for show password ", e);
         setShowPassword(!showPassword);
         return;
     };
 
     function change4Record(e) {
-        console.log("Form", formElement.current.checkValidity());
+        if (debugMode) console.log("Form", ref4Form.current.checkValidity());
         let obj1 = {
             dirty: true,
-            valid: formElement.current.checkValidity(),
+            valid: ref4Form.current.checkValidity(),
         };
         setFormState(obj1);
 
@@ -104,7 +101,7 @@ export function TestFormPage() {
             <div className="d-flex justify-content-center align-items-center" style={{ height: "100vh", }}>
                 <form name="form4Login" noValidate
                     className="col-12 col-sm-10 col-md-8 col-lg-5 col-xl-4"
-                    ref={formElement}>
+                    ref={ref4Form}>
                     <div className="row ">
                         <div className="col-12 fs-3 fw-bold my-3">
                             {sl.title}
@@ -183,7 +180,6 @@ export function TestFormPage() {
                     </div>
                 </form>
             </div>
-
 
             <DumpPanel dataList={[
                 { name: "record", data: record },
