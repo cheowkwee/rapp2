@@ -72,41 +72,6 @@ export function LoginPage({ debugMode = false }) {
         return obj1;
     };
 
-    function buildErrorElement(name, sl, fieldState = {}, formState = {}) {
-        // <span>{sl.e_username_invalid}</span>
-        console.log("Build error element for feild", name);
-        if (!formState.dirty || fieldState["valid"]) {
-            console.log("Not dirty no need to build error message element");
-            return [];
-        }
-
-        let list = [];
-        let n = 1;
-        for (let type in fieldState) {
-            console.log("Type", type);
-            if (type == "valid" && fieldState[type]) continue;
-            else if (type == "valueMissing" && !fieldState[type]) continue;
-            else if (type == "patternMismatch" && !fieldState[type]) continue;
-
-            let s = "";
-            if (type == "valueMissing") s = "required";
-            else if (type == "patternMismatch") s = "pattern";
-            else if (type == "valid" && !fieldState[type]) s = "invalid";
-            if (s == "") continue;
-
-            let key1 = "e_" + name + "_" + s;
-            let key2 = "e_" + s + "_" + name;
-            let message = sl[key1] || sl[key2] || undefined;
-            console.log("Message", message);
-            if (message == undefined) continue;
-
-            let element = <span key={n} style={{ fontSize: "10px" }}>{message}</span>;
-            list.push(element);
-            n++;
-        }
-        return list;
-    }
-
     // event handling function here ...
     function toggle4Language(e) {
         console.log("Toggle for Language ", e);
@@ -191,7 +156,7 @@ export function LoginPage({ debugMode = false }) {
                                 onChange={change4Record}
                                 required={true} />
                             <div className="text-danger" style={{ minHeight: '19px', lineHeight: "100%" }}>
-                                <span>{buildErrorElement('username', sl, fieldState['username'], formState)}</span>
+                                <span style={{ fontSize: "10px"}}>{tBox.getFieldErrorMessage('username', sl, fieldState, formState)}</span>
                             </div>
                         </div>
 

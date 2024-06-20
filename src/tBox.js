@@ -189,12 +189,12 @@ export function buildFormFieldState(target) {
 
 export function getFieldErrorMessage(name, sl, fieldState = {}, formState = {}) {
     console.log("Build error element for field", name);
-    if (!formState.dirty || fieldState["valid"]) {
-        console.log("Not dirty no need to build error message element");
+    if (!formState.dirty || fieldState[name] == undefined || fieldState[name]["valid"]) {
+        console.log("Not dirty, state not found or state is fine; No need to build error message element");
         return "";
     }
 
-    if (fieldState["badInput"]) {
+    if (fieldState[name]["badInput"]) {
         let s = "bad";
         let key1 = "e_" + name + "_" + s;
         let key2 = "e_" + s + "_" + name;
@@ -203,7 +203,7 @@ export function getFieldErrorMessage(name, sl, fieldState = {}, formState = {}) 
         if (message != undefined) return message;
     }
 
-    if (fieldState["patternMismatch"]) {
+    if (fieldState[name]["patternMismatch"]) {
         let s = "pattern";
         let key1 = "e_" + name + "_" + s;
         let key2 = "e_" + s + "_" + name;
@@ -212,7 +212,7 @@ export function getFieldErrorMessage(name, sl, fieldState = {}, formState = {}) 
         if (message != undefined) return message;
     }
 
-    if (!fieldState["valid"]) {
+    if (!fieldState[name]["valid"]) {
         let s = "invalid";
         let key1 = "e_" + name + "_" + s;
         let key2 = "e_" + s + "_" + name;

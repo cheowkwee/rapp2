@@ -7,13 +7,14 @@ import { globalContext } from "./globalContext.js";
 import { ErrorLine } from "./ErrorLine.js";
 import { DumpPanel } from "./DumpPanel.js";
 import { InfoDialogBox } from "./InfoDialogBox.js";
+import { InputTextBox } from "./InputTextBox.js";
 
 
 // Map loaded lib here ...
 // const uuidv4 = window.uuidv4;
 // const moment = window.moment;
 
-export function TestFormPage({ debugMode = false }) {
+export function TestFormPage({ debugMode = true }) {
     const componentName = "TestFormPage";
     if (debugMode) console.log(`${componentName} component start ...`);
 
@@ -110,15 +111,30 @@ export function TestFormPage({ debugMode = false }) {
 
                     <div className="row">
                         <div className="col-12">
+                            <label className="form-label mb-0">{sl.l_full_name}</label>
+                            <InputTextBox 
+                                name="fullName"
+                                maxLength={32}
+                                value={record.fullName || ""}
+                                onChange={change4Record}
+                                sl={sl}
+                                fieldState={fieldState} 
+                                formState={formState} 
+                                />
+                            <ErrorLine message={tBox.getFieldErrorMessage('fullName', sl, fieldState, formState)} />
+
+                        </div>
+
+                        <div className="col-12">
                             <label className="form-label mb-0">{sl.l_username}</label>
                             <input name="username" type="text"
                                 className={`form-control ${tBox.getClass4IsInvalid(fieldState['username']?.valid, formState.dirty, true)}`}
                                 placeholder={sl.p_username}
-                                maxLength={64}
+                                maxLength={16}
                                 value={record.username || ""}
                                 onChange={change4Record}
                                 required={true} />
-                            <ErrorLine message={tBox.getFieldErrorMessage('username', sl, fieldState['username'], formState)} />
+                            <ErrorLine message={tBox.getFieldErrorMessage('username', sl, fieldState, formState)} />
 
                         </div>
 
@@ -129,7 +145,7 @@ export function TestFormPage({ debugMode = false }) {
                                     type={showPassword ? 'text' : 'password'}
                                     className={`form-control ${tBox.getClass4IsInvalid(fieldState['password']?.valid, formState.dirty, true)}`}
                                     placeholder={sl.p_password}
-                                    maxLength={64}
+                                    maxLength={12}
                                     value={record.password || ""}
                                     onChange={change4Record}
                                     required={true} />
@@ -142,7 +158,7 @@ export function TestFormPage({ debugMode = false }) {
                                     }
                                 </button>
                             </div>
-                            <ErrorLine message={tBox.getFieldErrorMessage('password', sl, fieldState['password'], formState)} />
+                            <ErrorLine message={tBox.getFieldErrorMessage('password', sl, fieldState, formState)} />
 
                         </div>
 
@@ -153,7 +169,7 @@ export function TestFormPage({ debugMode = false }) {
                                     type={showPassword ? 'text' : 'password'}
                                     className={`form-control ${tBox.getClass4IsInvalid(fieldState['confirmPassword']?.valid, formState.dirty, true)}`}
                                     placeholder={sl.p_confirm_password}
-                                    maxLength={64}
+                                    maxLength={12}
                                     value={record.confirmPassword || ""}
                                     onChange={change4Record}
                                     required={true} />
@@ -166,7 +182,7 @@ export function TestFormPage({ debugMode = false }) {
                                     }
                                 </button>
                             </div>
-                            <ErrorLine message={tBox.getFieldErrorMessage('password', sl, fieldState['password'], formState)} />
+                            <ErrorLine message={tBox.getFieldErrorMessage('password', sl, fieldState, formState)} />
 
                         </div>
 
@@ -181,14 +197,16 @@ export function TestFormPage({ debugMode = false }) {
                 </form>
             </div>
 
-            <DumpPanel dataList={[
-                { name: "record", data: record },
-                { name: "formState", data: formState },
-                { name: "fieldState", data: fieldState },
-                // { name: "localData", data: localData },
-                // { name: "config", data: config },
-                { name: "sl", data: sl },
-            ]} />
+            <DumpPanel
+                dataList={[
+                    { name: "record", data: record },
+                    { name: "formState", data: formState },
+                    { name: "fieldState", data: fieldState },
+                    // { name: "localData", data: localData },
+                    // { name: "config", data: config },
+                    { name: "sl", data: sl },
+                ]}
+                debugMode={debugMode} />
         </>
     );
 }

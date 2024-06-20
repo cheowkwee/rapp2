@@ -133,11 +133,13 @@ export function TestDialogBoxPage({ debugMode = true }) {
 
             </div>
 
-            <InfoDialogBox message="Hello from information dialog box" show={showInfo}
+            <InfoDialogBox message="Hello from information dialog box"
+                show={showInfo}
                 callback4OK={(m) => { setShowInfo(false) }}
                 debugMode={debugMode} />
 
-            <ConfirmDialogBox message="Confirm delete record from table ?" show={showConfirm}
+            <ConfirmDialogBox message="Confirm delete record from table ?"
+                show={showConfirm}
                 callback4OK={(m) => { setShowConfirm(false) }}
                 callback4Cancel={(m) => { setShowConfirm(false) }}
                 debugMode={debugMode} />
